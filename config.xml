@@ -41,7 +41,7 @@ DATABASE_PHP</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Ant>
       <targets></targets>
-      <buildFile>build.xml</buildFile>
+      <buildFile>build.jenkins.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
