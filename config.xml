@@ -13,8 +13,35 @@
   <triggers class="vector"/>
   <concurrentBuild>false</concurrentBuild>
   <builders>
+    <hudson.tasks.Shell>
+      <command>mysql -u user -p password -e &apos;DROP DATABASE IF EXISTS cake_test; CREATE DATABASE cake_test&apos;;</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>cat &gt; app/Config/database.php &lt;&lt;&apos;DATABASE_PHP&apos;
+&lt;?php
+class DATABASE_CONFIG {
+    public $default = array(
+        &apos;datasource&apos; =&gt; &apos;Database/Mysql&apos;,
+        &apos;host&apos;       =&gt; &apos;localhost&apos;,
+        &apos;database&apos;   =&gt; &apos;cake_test&apos;,
+        &apos;login&apos;      =&gt; &apos;user&apos;,
+        &apos;password&apos;   =&gt; &apos;password&apos;,
+        &apos;encoding&apos;   =&gt; &apos;utf8&apos;
+    );
+    public $test = array(
+        &apos;datasource&apos; =&gt; &apos;Database/Mysql&apos;,
+        &apos;host&apos;       =&gt; &apos;localhost&apos;,
+        &apos;database&apos;   =&gt; &apos;cake_test&apos;,
+        &apos;login&apos;      =&gt; &apos;user&apos;,
+        &apos;password&apos;   =&gt; &apos;password&apos;,
+        &apos;encoding&apos;   =&gt; &apos;utf8&apos;
+    );
+}
+DATABASE_PHP</command>
+    </hudson.tasks.Shell>
     <hudson.tasks.Ant>
       <targets></targets>
+      <buildFile>build.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
@@ -45,6 +72,7 @@
         <failedNewLow></failedNewLow>
       </thresholds>
       <shouldDetectModules>false</shouldDetectModules>
+      <dontComputeNew>false</dontComputeNew>
       <pattern>build/logs/checkstyle.xml</pattern>
     </hudson.plugins.checkstyle.CheckStylePublisher>
     <hudson.plugins.pmd.PmdPublisher>
@@ -74,6 +102,7 @@
         <failedNewLow></failedNewLow>
       </thresholds>
       <shouldDetectModules>false</shouldDetectModules>
+      <dontComputeNew>false</dontComputeNew>
       <pattern>build/logs/pmd.xml</pattern>
     </hudson.plugins.pmd.PmdPublisher>
     <hudson.plugins.dry.DryPublisher>
@@ -103,6 +132,7 @@
         <failedNewLow></failedNewLow>
       </thresholds>
       <shouldDetectModules>false</shouldDetectModules>
+      <dontComputeNew>false</dontComputeNew>
       <pattern>build/logs/pmd-cpd.xml</pattern>
       <highThreshold>50</highThreshold>
       <normalThreshold>25</normalThreshold>
@@ -327,6 +357,11 @@
         </hudson.plugins.plot.Plot>
       </plots>
     </hudson.plugins.plot.PlotPublisher>
+    <hudson.tasks.junit.JUnitResultArchiver>
+      <testResults>build/logs/junit.xml</testResults>
+      <keepLongStdio>false</keepLongStdio>
+      <testDataPublishers/>
+    </hudson.tasks.junit.JUnitResultArchiver>
     <org.jenkinsci.plugins.cloverphp.CloverPublisher>
       <publishHtmlReport>true</publishHtmlReport>
       <reportDir>build/coverage</reportDir>
@@ -357,30 +392,6 @@
         </htmlpublisher.HtmlPublisherTarget>
       </reportTargets>
     </htmlpublisher.HtmlPublisher>
-    <xunit>
-      <types>
-        <PHPUnitJunitHudsonTestType>
-          <pattern>build/logs/junit.xml</pattern>
-          <faildedIfNotNew>true</faildedIfNotNew>
-          <deleteOutputFiles>true</deleteOutputFiles>
-          <stopProcessingIfError>true</stopProcessingIfError>
-        </PHPUnitJunitHudsonTestType>
-      </types>
-      <thresholds>
-        <org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
-          <unstableThreshold>0</unstableThreshold>
-          <unstableNewThreshold>0</unstableNewThreshold>
-          <failureThreshold>0</failureThreshold>
-          <failureNewThreshold>0</failureNewThreshold>
-        </org.jenkinsci.plugins.xunit.threshold.FailedThreshold>
-        <org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
-          <unstableThreshold>0</unstableThreshold>
-          <unstableNewThreshold>0</unstableNewThreshold>
-          <failureThreshold>0</failureThreshold>
-          <failureNewThreshold>0</failureNewThreshold>
-        </org.jenkinsci.plugins.xunit.threshold.SkippedThreshold>
-      </thresholds>
-    </xunit>
     <hudson.plugins.jdepend.JDependRecorder>
       <configuredJDependFile>build/logs/jdepend.xml</configuredJDependFile>
     </hudson.plugins.jdepend.JDependRecorder>
@@ -560,7 +571,7 @@
         <limit>100</limit>
         <sourcePathPattern></sourcePathPattern>
         <fauxProjectPath></fauxProjectPath>
-        <encoding>default</encoding>
+        <encoding>UTF-8</encoding>
       </config>
     </hudson.plugins.violations.ViolationsPublisher>
   </publishers>
