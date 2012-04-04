@@ -146,7 +146,7 @@
  </target>
 
  <target name="cake" description="Run unit tests">
-  <exec executable="app/Console/cake" failonerror="true">
+  <exec executable="app/Console/cake">
    <arg value="test" />
    <arg value="core" />
    <arg value="AllTests" />
