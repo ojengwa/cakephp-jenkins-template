@@ -26,6 +26,7 @@
   <delete dir="${basedir}/build/code-browser"/>
   <delete dir="${basedir}/build/coverage"/>
   <delete dir="${basedir}/build/pdepend"/>
+  <delete dir="${basedir}/build/logs"/>
  </target>
 
  <target name="prepare" depends="clean"
@@ -34,6 +35,7 @@
   <mkdir dir="${basedir}/build/code-browser"/>
   <mkdir dir="${basedir}/build/coverage"/>
   <mkdir dir="${basedir}/build/pdepend"/>
+  <mkdir dir="${basedir}/build/logs"/>
  </target>
 
  <target name="lint">
@@ -155,6 +157,8 @@
    <arg path="build/logs/junit.xml" />
    <arg value="--coverage-clover" />
    <arg path="build/logs/clover.xml" />
+   <arg value="--coverage-html" />
+   <arg path="build/coverage/" />
   </exec>
  </target>
 
