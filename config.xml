@@ -14,34 +14,28 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>mysql -u user -p password -e &apos;DROP DATABASE IF EXISTS cake_test; CREATE DATABASE cake_test&apos;;</command>
+      <command>touch testdb/init</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cat &gt; app/Config/database.php &lt;&lt;&apos;DATABASE_PHP&apos;
 &lt;?php
 class DATABASE_CONFIG {
     public $default = array(
-        &apos;datasource&apos; =&gt; &apos;Database/Mysql&apos;,
-        &apos;host&apos;       =&gt; &apos;localhost&apos;,
-        &apos;database&apos;   =&gt; &apos;cake_test&apos;,
-        &apos;login&apos;      =&gt; &apos;user&apos;,
-        &apos;password&apos;   =&gt; &apos;password&apos;,
-        &apos;encoding&apos;   =&gt; &apos;utf8&apos;
+        &apos;datasource&apos; =&gt; &apos;Database/Sqlite&apos;,
+        &apos;persistent&apos; =&gt; &apos;false&apos;,
+        &apos;database&apos;   =&gt; &apos;testdb/&apos;.uniqid()
     );
     public $test = array(
-        &apos;datasource&apos; =&gt; &apos;Database/Mysql&apos;,
-        &apos;host&apos;       =&gt; &apos;localhost&apos;,
-        &apos;database&apos;   =&gt; &apos;cake_test&apos;,
-        &apos;login&apos;      =&gt; &apos;user&apos;,
-        &apos;password&apos;   =&gt; &apos;password&apos;,
-        &apos;encoding&apos;   =&gt; &apos;utf8&apos;
+        &apos;datasource&apos; =&gt; &apos;Database/Sqlite&apos;,
+        &apos;persistent&apos; =&gt; &apos;false&apos;,
+        &apos;database&apos;   =&gt; &apos;testdb/&apos;.uniqid()
     );
 }
 DATABASE_PHP</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Ant>
       <targets></targets>
-      <buildFile>build.jenkins.xml</buildFile>
+      <buildFile>build.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
