@@ -38,7 +38,7 @@ DATABASE_PHP</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Ant>
       <targets></targets>
-      <buildFile>ci.xml</buildFile>
+      <buildFile>build.ci.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>

@@ -118,7 +118,7 @@
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
    <arg value="--standard=CakePHP" />
    <arg value="--encoding=utf-8" />
-   <arg value="--ignore=${basedir}/lib/Cake/Console/Templates,${basedir}/lib/Cake/Test,*.txt,*.bat,*js" /> 
+   <arg value="--ignore=${basedir}/lib/Cake/Console/Templates,${basedir}/lib/Cake/Test,*.txt,*.bat,*js" />
    <arg path="${basedir}/lib/Cake" />
   </exec>
  </target>
