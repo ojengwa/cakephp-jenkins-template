@@ -17,9 +17,6 @@
       <command>mkdir testdb</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
-      <command>composer install</command>
-    </hudson.tasks.Shell>
-    <hudson.tasks.Shell>
       <command>cat &gt; app/Config/database.php &lt;&lt;&apos;DATABASE_PHP&apos;
 &lt;?php
 class DATABASE_CONFIG {
