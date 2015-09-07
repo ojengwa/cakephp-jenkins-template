@@ -14,7 +14,10 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>touch testdb/init</command>
+      <command>mkdir testdb</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>composer install</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Shell>
       <command>cat &gt; app/Config/database.php &lt;&lt;&apos;DATABASE_PHP&apos;
@@ -35,7 +38,7 @@ DATABASE_PHP</command>
     </hudson.tasks.Shell>
     <hudson.tasks.Ant>
       <targets></targets>
-      <buildFile>build.xml</buildFile>
+      <buildFile>ci.xml</buildFile>
     </hudson.tasks.Ant>
   </builders>
   <publishers>
