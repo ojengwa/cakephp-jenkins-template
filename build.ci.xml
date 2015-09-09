@@ -2,10 +2,10 @@
 
 <project name="CakePHP" default="build">
  <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,cake,phpcb"/>
+   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,cake"/>
 
  <target name="build-parallel"
-   depends="prepare,lint,tools-parallel,cake,phpcb"/>
+   depends="prepare,lint,tools-parallel,cake"/>
 
  <target name="tools-parallel"
          description="Run tools in parallel">
@@ -164,19 +164,4 @@
   </exec>
  </target>
 
- <target name="phpcb"
-         description="Aggregate tool output with PHP_CodeBrowser">
-  <exec executable="phpcb">
-   <arg value="--log" />
-   <arg path="${basedir}/build/logs" />
-   <arg value="--source" />
-   <arg path="${basedir}/app" />
-   <arg value="--output" />
-   <arg path="${basedir}/build/code-browser" />
-   <arg value="-S" />
-   <arg value="php" />
-   <arg value="-i" />
-   <arg value="app/Console/cake,app/Console/cake.php,app/Test/,app/Console/Templates/skel/" />
-  </exec>
- </target>
 </project>
