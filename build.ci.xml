@@ -2,7 +2,7 @@
 
 <project name="CakePHP" default="build">
  <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpcs-ci,phpcpd,phpdoc,cake,phpcb"/>
+   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,cake,phpcb"/>
 
  <target name="build-parallel"
    depends="prepare,lint,tools-parallel,cake,phpcb"/>
@@ -12,6 +12,7 @@
   <parallel threadCount="2">
    <sequential>
     <antcall target="pdepend"/>
+    <antcall target="phpmd-ci"/>
    </sequential>
    <antcall target="phpcpd"/>
    <antcall target="phpcs-ci"/>
@@ -41,7 +42,7 @@
   <apply executable="php" failonerror="true">
    <arg value="-l" />
 
-   <fileset dir="${basedir}/lib/Cake">
+   <fileset dir="${basedir}/app">
     <include name="**/*.php" />
     <modified />
    </fileset>
@@ -52,36 +53,63 @@
  <target name="phploc" description="Measure project size using PHPLOC">
   <exec executable="phploc">
    <arg value="--exclude" />
-   <arg value="${basedir}/lib/Cake/Test" />
+   <arg value="${basedir}/app" />
    <arg value="--exclude" />
-   <arg value="${basedir}/lib/Cake/Templates" />
+   <arg value="${basedir}/lib" />
    <arg value="--log-csv" />
    <arg value="${basedir}/build/logs/phploc.csv" />
-   <arg path="${basedir}/lib/Cake" />
+   <arg path="${basedir}/app" />
   </exec>
  </target>
 
  <target name="pdepend"
          description="Calculate software metrics using PHP_Depend">
   <exec executable="pdepend">
-   <arg value="--ignore=${basedir}/lib/Cake/Test,${basedir}/lib/Cake/Console/Templates" />
+   <arg value="--ignore=${basedir}/app/Test,${basedir}/app/Console" />
    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-   <arg path="${basedir}/lib/Cake" />
+   <arg path="${basedir}/app" />
   </exec>
  </target>
 
+ <target name="phpmd"
+         description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+  <exec executable="phpmd">
+   <arg path="${basedir}/app" />
+   <arg value="text" />
+   <arg value="codesize,design,naming,unusedcode" />
+   <arg value="--exclude" />
+   <arg value="${basedir}/app/Test" />
+   <arg value="--exclude" />
+   <arg value="${basedir}/app/Console" />
+   <arg value="--exclude" />
+   <arg value="${basedir}/app/Plugin" />
+  </exec>
+ </target>
 
-
+ <target name="phpmd-ci"
+         description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
+  <exec executable="phpmd">
+   <arg path="${basedir}/app" />
+   <arg value="xml" />
+   <arg value="codesize,design,naming,unusedcode" />
+   <arg value="--reportfile" />
+   <arg value="${basedir}/build/logs/pmd.xml" />
+   <arg value="--exclude" />
+   <arg value="${basedir}/app/Test" />
+   <arg value="--exclude" />
+   <arg value="${basedir}/app/Console" />
+  </exec>
+ </target>
 
  <target name="phpcs"
          description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
   <exec executable="phpcs">
    <arg value="--standard=CakePHP" />
    <arg value="--encoding=utf-8" />
-   <arg value="--ignore=${basedir}/lib/Cake/Console/Templates,${basedir}/lib/Cake/Test,*.txt,*.bat,*js" />
-   <arg path="${basedir}/lib/Cake" />
+   <arg value="--ignore=${basedir}/app/Console,${basedir}/app/Test,*.txt,*.bat,*js" />
+   <arg path="${basedir}/app" />
   </exec>
  </target>
 
@@ -92,8 +120,8 @@
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
    <arg value="--standard=CakePHP" />
    <arg value="--encoding=utf-8" />
-   <arg value="--ignore=${basedir}/lib/Cake/Console/Templates,${basedir}/lib/Cake/Test,*.txt,*.bat,*js" />
-   <arg path="${basedir}/lib/Cake" />
+   <arg value="--ignore=${basedir}/app/Console,${basedir}/lib/Cake/Test,*.txt,*.bat,*js" />
+   <arg path="${basedir}/app" />
   </exec>
  </target>
 
@@ -104,8 +132,8 @@
    <arg value="--exclude" />
    <arg value="${basedir}/lib/Cake/Test" />
    <arg value="--exclude" />
-   <arg value="${basedir}/lib/Cake/Console/Templates" />
-   <arg path="${basedir}/lib/Cake" />
+   <arg value="${basedir}/app/Console" />
+   <arg path="${basedir}/app" />
   </exec>
  </target>
 
@@ -117,24 +145,22 @@
    <arg value="--target" />
    <arg path="${basedir}/build/api" />
    <arg value="--ignore" />
-   <arg value="Console/cake.php,Test/" />
-   <arg value="--template" />
-   <arg value="clean" />
+   <arg value="Console/cake.php,Test/,Console/Templates/skel/,Config/unicode/" />
    </exec>
  </target>
 
  <target name="cake" description="Run unit tests">
   <exec executable="app/Console/cake">
    <arg value="test" />
-   <arg value="core" />
+   <arg value="app" />
    <arg value="AllTests" />
    <arg value="--stderr" />
    <arg value="--log-junit" />
-   <arg path="${basedir}/build/logs/junit.xml" />
+   <arg path="build/logs/junit.xml" />
    <arg value="--coverage-clover" />
-   <arg path="${basedir}/build/logs/clover.xml" />
+   <arg path="build/logs/clover.xml" />
    <arg value="--coverage-html" />
-   <arg path="${basedir}/build/coverage/" />
+   <arg path="build/coverage/" />
   </exec>
  </target>
 
@@ -144,13 +170,13 @@
    <arg value="--log" />
    <arg path="${basedir}/build/logs" />
    <arg value="--source" />
-   <arg path="${basedir}/lib/Cake" />
+   <arg path="${basedir}/app" />
    <arg value="--output" />
    <arg path="${basedir}/build/code-browser" />
    <arg value="-S" />
    <arg value="php" />
    <arg value="-i" />
-   <arg value="lib/Cake/Console/cake,lib/Cake/Console/cake.php,lib/Cake/Test/,lib/Cake/LICENSE.txt,lib/Cake/VERSION.txt,lib/Cake/Console/Templates/skel/" />
+   <arg value="app/Console/cake,app/Console/cake.php,app/Test/,app/Console/Templates/skel/" />
   </exec>
  </target>
 </project>
