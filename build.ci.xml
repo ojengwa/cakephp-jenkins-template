@@ -2,7 +2,7 @@
 
 <project name="CakePHP" default="build">
  <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,cake,phpcb"/>
+   depends="prepare,lint,phploc,pdepend,phpcs-ci,phpcpd,phpdoc,cake,phpcb"/>
 
  <target name="build-parallel"
    depends="prepare,lint,tools-parallel,cake,phpcb"/>
@@ -12,7 +12,7 @@
   <parallel threadCount="2">
    <sequential>
     <antcall target="pdepend"/>
-    <antcall target="phpmd-ci"/>
+    <!--<antcall target="phpmd-ci"/>-->
    </sequential>
    <antcall target="phpcpd"/>
    <antcall target="phpcs-ci"/>
@@ -86,20 +86,20 @@
   </exec>
  </target>
 
- <target name="phpmd-ci"
-         description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-  <exec executable="phpmd">
-   <arg path="${basedir}" />
-   <arg value="xml" />
-   <arg value="codesize,design,naming,unusedcode" />
-   <arg value="--reportfile" />
-   <arg value="${basedir}/build/logs/pmd.xml" />
-   <arg value="--exclude" />
-   <arg value="${basedir}/lib/Cake/Test" />
-   <arg value="--exclude" />
-   <arg value="${basedir}/lib/Cake/Console/Templates" />
-  </exec>
- </target>
+ <!--<target name="phpmd-ci"-->
+ <!--        description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">-->
+ <!-- <exec executable="phpmd">-->
+ <!--  <arg path="${basedir}" />-->
+ <!--  <arg value="xml" />-->
+ <!--  <arg value="codesize,design,naming,unusedcode" />-->
+ <!--  <arg value="--reportfile" />-->
+ <!--  <arg value="${basedir}/build/logs/pmd.xml" />-->
+ <!--  <arg value="--exclude" />-->
+ <!--  <arg value="${basedir}/lib/Cake/Test" />-->
+ <!--  <arg value="--exclude" />-->
+ <!--  <arg value="${basedir}/lib/Cake/Console/Templates" />-->
+ <!-- </exec>-->
+ <!--</target>-->
 
  <target name="phpcs"
          description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
