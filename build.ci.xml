@@ -113,11 +113,11 @@
          description="Generate API documentation using PHPDocumentor">
   <exec executable="phpdoc">
    <arg value="--directory" />
-   <arg path="${basedir}/lib/Cake" />
+   <arg path="${basedir}/app" />
    <arg value="--target" />
    <arg path="${basedir}/build/api" />
    <arg value="--ignore" />
-   <arg value="Console/cake.php,Test/,Console/Templates/skel/,Config/unicode/" />
+   <arg value="Console/cake.php,Test/" />
    <arg value="--template" />
    <arg value="clean" />
    </exec>
