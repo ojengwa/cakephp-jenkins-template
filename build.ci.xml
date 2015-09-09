@@ -117,7 +117,7 @@
    <arg value="--target" />
    <arg path="${basedir}/build/api" />
    <arg value="--ignore" />
-   <arg value="${basedir}/lib/Cake/Console/cake.php,${basedir}/lib/Cake/Test/,${basedir}/lib/Cake/Console/Templates/skel/,${basedir}/lib/Cake/Config/unicode/" />
+   <arg value="Console/cake.php,Test/,Console/Templates/skel/,Config/unicode/" />
    <arg value="--template" />
    <arg value="clean" />
    </exec>
