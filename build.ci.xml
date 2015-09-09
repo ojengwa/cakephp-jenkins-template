@@ -12,7 +12,6 @@
   <parallel threadCount="2">
    <sequential>
     <antcall target="pdepend"/>
-    <antcall target="phpmd-ci"/>
    </sequential>
    <antcall target="phpcpd"/>
    <antcall target="phpcs-ci"/>
@@ -73,18 +72,6 @@
   </exec>
  </target>
 
- <target name="phpmd"
-         description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="phpmd">
-   <arg path="${basedir}/lib/Cake" />
-   <arg value="text" />
-   <arg value="codesize,design,naming,unusedcode" />
-   <arg value="--exclude" />
-   <arg value="${basedir}/lib/Cake/Test" />
-   <arg value="--exclude" />
-   <arg value="${basedir}/lib/Cake/Console/Templates" />
-  </exec>
- </target>
 
 
 
