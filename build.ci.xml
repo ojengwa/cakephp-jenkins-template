@@ -12,6 +12,7 @@
   <parallel threadCount="2">
    <sequential>
     <antcall target="pdepend"/>
+    <antcall target="phpmd-ci"/>
    </sequential>
    <antcall target="phpcpd"/>
    <antcall target="phpcs-ci"/>
@@ -85,6 +86,8 @@
   </exec>
  </target>
 
+
+
  <target name="phpcs"
          description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
   <exec executable="phpcs">
@@ -140,11 +143,11 @@
    <arg value="AllTests" />
    <arg value="--stderr" />
    <arg value="--log-junit" />
-   <arg path="build/logs/junit.xml" />
+   <arg path="${basedir}/build/logs/junit.xml" />
    <arg value="--coverage-clover" />
-   <arg path="build/logs/clover.xml" />
+   <arg path="${basedir}/build/logs/clover.xml" />
    <arg value="--coverage-html" />
-   <arg path="build/coverage/" />
+   <arg path="${basedir}/build/coverage/" />
   </exec>
  </target>
 
