@@ -165,7 +165,9 @@
 
  <target name="cake" description="Run multiple unit tests">
   <exec executable="app/Console/cake">
-   <arg value="tests" />
+   <arg value="test" />
+   <arg value="app" />
+   <arg value="AllTests" />
    <arg value="--stderr" />
    <arg value="--log-junit" />
    <arg path="build/logs/junit.xml" />
