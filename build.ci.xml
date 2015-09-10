@@ -27,6 +27,8 @@
   <delete dir="${basedir}/build/coverage"/>
   <delete dir="${basedir}/build/pdepend"/>
   <delete dir="${basedir}/build/logs"/>
+  <delete dir="${basedir}/cake.db"/>
+  <delete dir="${basedir}/testdb/"/>
  </target>
 
  <target name="prepare" depends="clean"
@@ -150,6 +152,11 @@
  </target>
 
  <target name="cake" description="Run multiple unit tests">
+  <exec executable="app/Console/cake">
+   <arg value="schema" />
+   <arg value="create" />
+   <arg value="--yes" />
+  </exec>
   <exec executable="app/Console/cake">
    <arg value="test" />
    <arg value="app" />
