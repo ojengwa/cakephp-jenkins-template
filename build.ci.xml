@@ -149,20 +149,6 @@
    </exec>
  </target>
 
- <target name="cake" description="Run unit tests">
-  <exec executable="app/Console/cake">
-   <arg value="test" />
-   <arg value="app" />
-   <arg value="--stderr" />
-   <arg value="--log-junit" />
-   <arg path="build/logs/junit.xml" />
-   <arg value="--coverage-clover" />
-   <arg path="build/logs/clover.xml" />
-   <arg value="--coverage-html" />
-   <arg path="build/coverage/" />
-  </exec>
- </target>
-
  <target name="cake" description="Run multiple unit tests">
   <exec executable="app/Console/cake">
    <arg value="test" />
